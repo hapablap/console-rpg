@@ -9,39 +9,45 @@ namespace Game
     // dass der Spieler durch die Wand der Map läuft
     class Program
     {
-        static Direction currentPlayerDirection = Direction.None;
-
         static List<IDrawable> DrawableEntities = new List<IDrawable>();
+        static List<IMovable> MovableEntities = new List<IMovable>();
 
         static void Main(string[] args)
         {
-            // Cursors ausblenden
             Console.CursorVisible = false;
 
-            // Entitäten erzeugen
-            Player player = new Player(1, 1);
+            Map map = new Map(1, 1, 20, 50);
             Enemy enemy = new Enemy(2, 2);
+            Player player = Player.GetInstance();
+            player.CurrentMap = map;
 
-            // Entitäten zur Liste hinzufügen, damit sie gezeichnet werden
+            DrawableEntities.Add(map);
             DrawableEntities.Add(player);
             DrawableEntities.Add(enemy);
 
-            // Game Loop (Endlosschleife)
+            MovableEntities.Add(player);
+
             while (true)
             {
                 DrawScreen();
                 HandleInput();
+                MoveEntities();
+            }
+        }
 
-                player.Move(currentPlayerDirection);
+        static void MoveEntities()
+        {
+            foreach (var movableEntity in MovableEntities)
+            {
+                if (movableEntity.CanMove())
+                    movableEntity.Move();
             }
         }
 
         static void DrawScreen()
         {
-            // Bildschirm leeren
             Console.Clear();
 
-            // Entitäten einzelnd zeichnen
             foreach (var drawableEntity in DrawableEntities)
             {
                 drawableEntity.Draw();
@@ -50,24 +56,23 @@ namespace Game
 
         static void HandleInput()
         {
-            // Tasteneingabe vom Spieler behandeln
             ConsoleKeyInfo key = Console.ReadKey();
             switch (key.Key)
             {
                 case ConsoleKey.LeftArrow:
-                    currentPlayerDirection = Direction.Left;
+                    Player.GetInstance().MoveDirection = Direction.Left;
                     break;
                 case ConsoleKey.RightArrow:
-                    currentPlayerDirection = Direction.Right;
+                    Player.GetInstance().MoveDirection = Direction.Right;
                     break;
                 case ConsoleKey.UpArrow:
-                    currentPlayerDirection = Direction.Up;
+                    Player.GetInstance().MoveDirection = Direction.Up;
                     break;
                 case ConsoleKey.DownArrow:
-                    currentPlayerDirection = Direction.Down;
+                    Player.GetInstance().MoveDirection = Direction.Down;
                     break;
                 default:
-                    currentPlayerDirection = Direction.None;
+                    Player.GetInstance().MoveDirection = Direction.None;
                     break;
             }
         }
