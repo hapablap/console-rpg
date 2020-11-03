@@ -20,12 +20,14 @@ namespace Game
             Enemy enemy = new Enemy(2, 2);
             Player player = Player.GetInstance();
             player.CurrentMap = map;
+            enemy.CurrentMap = map;
 
             DrawableEntities.Add(map);
             DrawableEntities.Add(player);
             DrawableEntities.Add(enemy);
 
             MovableEntities.Add(player);
+            MovableEntities.Add(enemy);
 
             while (true)
             {
