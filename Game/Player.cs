@@ -23,6 +23,20 @@ namespace Game
             Position = new Position(1, 1);
         }
 
+        #region IDrawable implementation
+        public void Draw()
+        {
+            Console.SetCursorPosition(Position.X, Position.Y);
+            Console.Write(GetSymbol());
+        }
+
+        public char GetSymbol()
+        {
+            return '*';
+        }
+        #endregion
+
+        #region IMovable implementation
         public Direction GetMoveDirection()
         {
             return MoveDirection;
@@ -46,16 +60,6 @@ namespace Game
         {
             Position.Move(GetMoveDirection());
         }
-
-        public void Draw()
-        {
-            Console.SetCursorPosition(Position.X, Position.Y);
-            Console.Write(GetSymbol());
-        }
-
-        public char GetSymbol()
-        {
-            return '*';
-        }
+        #endregion
     }
 }

@@ -12,22 +12,24 @@ namespace Game
         static List<IDrawable> DrawableEntities = new List<IDrawable>();
         static List<IMovable> MovableEntities = new List<IMovable>();
 
+        static EnemyFactory EnemyFactory = new EnemyFactory();
+
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
 
             Map map = new Map(1, 1, 20, 50);
-            Enemy enemy = new Enemy(2, 2);
+            Enemy orcEnemy = EnemyFactory.GetEnemy("orc", 2, 2);
             Player player = Player.GetInstance();
             player.CurrentMap = map;
-            enemy.CurrentMap = map;
+            orcEnemy.CurrentMap = map;
 
             DrawableEntities.Add(map);
             DrawableEntities.Add(player);
-            DrawableEntities.Add(enemy);
+            DrawableEntities.Add(orcEnemy);
 
             MovableEntities.Add(player);
-            MovableEntities.Add(enemy);
+            MovableEntities.Add(orcEnemy);
 
             while (true)
             {

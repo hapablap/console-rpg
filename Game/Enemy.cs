@@ -15,6 +15,16 @@ namespace Game
             Position = new Position(x, y);
         }
 
+        private void GenerateRandomMoveDirection()
+        {
+            // Random move direction
+            // @source: https://stackoverflow.com/questions/3132126/how-do-i-select-a-random-value-from-an-enumeration
+            Array values = Enum.GetValues(typeof(Direction));
+            Random random = new Random();
+            moveDirection = (Direction)values.GetValue(random.Next(values.Length));
+        }
+
+        #region IDrawable implementation
         public void Draw()
         {
             Console.SetCursorPosition(Position.X, Position.Y);
@@ -25,16 +35,9 @@ namespace Game
         {
             return '$';
         }
+        #endregion
 
-        private void GenerateRandomMoveDirection()
-        {
-            // Random move direction
-            // @source: https://stackoverflow.com/questions/3132126/how-do-i-select-a-random-value-from-an-enumeration
-            Array values = Enum.GetValues(typeof(Direction));
-            Random random = new Random();
-            moveDirection = (Direction)values.GetValue(random.Next(values.Length));
-        }
-
+        #region IMovable implementation
         public void Move()
         {
             Position.Move(moveDirection);
@@ -60,5 +63,6 @@ namespace Game
                 tempPosition.Y < CurrentMap.MinTop ||
                 tempPosition.Y > CurrentMap.MaxTop);
         }
+        #endregion
     }
 }

@@ -25,6 +25,7 @@ namespace Game
             MaxTop = Position.Y + Height;
         }
 
+        #region IDrawable implementation
         public void Draw()
         {
             for (int i = MinLeft; i < MaxLeft + 1; i++)
@@ -56,5 +57,6 @@ namespace Game
         {
             return '#';
         }
+        #endregion
     }
 }
