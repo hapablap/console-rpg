@@ -15,6 +15,8 @@ namespace Game
         public static bool IsFighting = false;
         public static Enemy CurrentEnemy = null;
 
+        static bool IsGameOver = false;
+
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
@@ -33,7 +35,7 @@ namespace Game
             DrawableEntities.Add(player);
             MovableEntities.Add(player);
 
-            while (true)
+            while (!IsGameOver)
             {
                 if (IsFighting)
                 {
@@ -46,6 +48,9 @@ namespace Game
                     MoveEntities();
                     CheckCollisions();
                 }
+
+                if (IsGameOver)
+                    DrawGameOverScreen();
             }
         }
 
@@ -56,6 +61,13 @@ namespace Game
             DrawableEntities.Add(enemy);
             MovableEntities.Add(enemy);
             Collidables.Add(enemy);
+        }
+
+        static void RemoveEnemy(Enemy enemy)
+        {
+            DrawableEntities.Remove(enemy);
+            MovableEntities.Remove(enemy);
+            Collidables.Remove(enemy);
         }
 
         static void MoveEntities()
@@ -78,11 +90,20 @@ namespace Game
             }
         }
 
+        static void DrawGameOverScreen()
+        {
+            Console.Clear();
+            Console.WriteLine("Game Over!");
+            Console.ReadLine();
+        }
+
         static void DrawFightScreen()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Fight started!");
+            Console.WriteLine($"Your Health: {Player.GetInstance().Health}");
+            Console.WriteLine($"Enemy's Health: {CurrentEnemy.Health}");
             Console.WriteLine("Choose action:");
             Console.WriteLine("    0) Run away");
             Console.WriteLine("    1) Fight");
@@ -92,21 +113,32 @@ namespace Game
             switch (action)
             {
                 case 0:
-                    // Run away
-                    // Tipp: Rückgängig machen von Enemy.ActionOnCollision()
+                    IsFighting = false;
+                    CurrentEnemy = null;
                     break;
                 case 1:
-                    // Fight
-                    // Tipp: Z.B. Random eine Zahl werfen (0-1), 
-                    //       bei 0: Gegner trifft Spieler (Player.Health verringern)
-                    //       bei 1: Spieler trifft Gegner (CurrentEnemy.Health verringern)
-                    // Überprüfen, ob Player oder CurrentEnemy Health <= 0
-                    //      bei Player.Health <0 => Game Over
-                    //      bei CurrentEnemy.Health => Spiel fortsetzen (vgl. Run Away),
-                    //                              => zusätzlich besiegten Gegner entfernen
+                    Random random = new Random();
+                    int randomNumber = random.Next(0, 100);
+                    if(randomNumber <= 30)
+                    {
+                        Player.GetInstance().Health -= 10;
+                    }
+                    else 
+                    {
+                        CurrentEnemy.Health -= 10;
+                    }
+
+                    if (Player.GetInstance().Health <= 0)
+                        IsGameOver = true;
+
+                    if(CurrentEnemy.Health <= 0)
+                    {
+                        RemoveEnemy(CurrentEnemy);
+                        CurrentEnemy = null;
+                        IsFighting = false;
+                    }
                     break;
                 default:
-                    // Invalid input
                     break;
             }
         }
