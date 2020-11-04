@@ -11,6 +11,7 @@ namespace Game
     {
         static List<IDrawable> DrawableEntities = new List<IDrawable>();
         static List<IMovable> MovableEntities = new List<IMovable>();
+        static List<Enemy> enemies = new List<Enemy>();
 
         static EnemyFactory EnemyFactory = new EnemyFactory();
 
@@ -37,6 +38,7 @@ namespace Game
                 DrawScreen();
                 HandleInput();
                 MoveEntities();
+                CheckCollisions();
             }
         }
 
@@ -46,6 +48,7 @@ namespace Game
             enemy.CurrentMap = map;
             DrawableEntities.Add(enemy);
             MovableEntities.Add(enemy);
+            enemies.Add(enemy);
         }
 
         static void MoveEntities()
@@ -54,6 +57,21 @@ namespace Game
             {
                 if (movableEntity.CanMove())
                     movableEntity.Move();
+            }
+        }
+
+        static void CheckCollisions()
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                // ICollidable.GetPosition() vergleichen mit Player Position
+                if (Player.GetInstance().Position.X == enemy.Position.X && Player.GetInstance().Position.Y == enemy.Position.Y)
+                {
+                    // Enemy: Kampf starten
+                    // (Item: Gegenstand benutzen)
+                    // (NPC: Sprechen)
+                    // => ICollidable.ActionOnCollision()
+                }
             }
         }
 
