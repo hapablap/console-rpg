@@ -4,14 +4,11 @@ using System.Collections.Generic;
 
 namespace Game
 {
-    // 3. Aufgabe:
-    // Implementieren Sie objektorientiert die Möglichkeit, zu verhindern,
-    // dass der Spieler durch die Wand der Map läuft
     class Program
     {
         static List<IDrawable> DrawableEntities = new List<IDrawable>();
         static List<IMovable> MovableEntities = new List<IMovable>();
-        static List<Enemy> enemies = new List<Enemy>();
+        static List<ICollidable> Collidables = new List<ICollidable>();
 
         static EnemyFactory EnemyFactory = new EnemyFactory();
 
@@ -48,7 +45,7 @@ namespace Game
             enemy.CurrentMap = map;
             DrawableEntities.Add(enemy);
             MovableEntities.Add(enemy);
-            enemies.Add(enemy);
+            Collidables.Add(enemy);
         }
 
         static void MoveEntities()
@@ -62,15 +59,11 @@ namespace Game
 
         static void CheckCollisions()
         {
-            foreach (Enemy enemy in enemies)
+            foreach (ICollidable collidable in Collidables)
             {
-                // ICollidable.GetPosition() vergleichen mit Player Position
-                if (Player.GetInstance().Position.X == enemy.Position.X && Player.GetInstance().Position.Y == enemy.Position.Y)
+                if (Player.GetInstance().Position.IsEqual(collidable.GetPosition()))
                 {
-                    // Enemy: Kampf starten
-                    // (Item: Gegenstand benutzen)
-                    // (NPC: Sprechen)
-                    // => ICollidable.ActionOnCollision()
+                    collidable.ActionOnCollision();
                 }
             }
         }

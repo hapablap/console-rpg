@@ -11,6 +11,11 @@
             Y = y;
         }
 
+        public bool IsEqual(Position position)
+        {
+            return X == position.X && Y == position.Y;
+        }
+
         public void Move(Direction direction)
         {
             switch (direction)

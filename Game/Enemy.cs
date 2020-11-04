@@ -3,7 +3,7 @@ using System;
 
 namespace Game
 {
-    public abstract class Enemy : IDrawable, IMovable
+    public abstract class Enemy : IDrawable, IMovable, ICollidable
     {
         public Position Position;
         public Map CurrentMap = null;
@@ -68,6 +68,18 @@ namespace Game
                 tempPosition.X > CurrentMap.MaxLeft ||
                 tempPosition.Y < CurrentMap.MinTop ||
                 tempPosition.Y > CurrentMap.MaxTop);
+        }
+        #endregion
+
+        #region ICollidable Implementation
+        public Position GetPosition()
+        {
+            return Position;
+        }
+
+        public void ActionOnCollision()
+        {
+            Console.WriteLine("Starting Fight!");
         }
         #endregion
     }
