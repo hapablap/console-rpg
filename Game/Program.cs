@@ -19,29 +19,18 @@ namespace Game
             Console.CursorVisible = false;
 
             Map map = new Map(1, 1, 20, 50);
-            Enemy orcEnemy1 = EnemyFactory.GetEnemy("orc", 2, 2);
-            Enemy orcEnemy2 = EnemyFactory.GetEnemy("orc", 4, 11);
-            Enemy demonEnemy = EnemyFactory.GetEnemy("demon", 5, 8);
-            Enemy undeadEnemy = EnemyFactory.GetEnemy("undead", 12, 15);
+
+            GenerateEnemy("orc", map, 2, 2);
+            GenerateEnemy("orc", map, 4, 11);
+            GenerateEnemy("demon", map, 5, 8);
+            GenerateEnemy("orc", map, 12, 15);
+
             Player player = Player.GetInstance();
             player.CurrentMap = map;
-            orcEnemy1.CurrentMap = map;
-            orcEnemy2.CurrentMap = map;
-            demonEnemy.CurrentMap = map;
-            undeadEnemy.CurrentMap = map;
 
             DrawableEntities.Add(map);
             DrawableEntities.Add(player);
-            DrawableEntities.Add(orcEnemy1);
-            DrawableEntities.Add(orcEnemy2);
-            DrawableEntities.Add(demonEnemy);
-            DrawableEntities.Add(undeadEnemy);
-
             MovableEntities.Add(player);
-            MovableEntities.Add(orcEnemy1);
-            MovableEntities.Add(orcEnemy2);
-            MovableEntities.Add(demonEnemy);
-            MovableEntities.Add(undeadEnemy);
 
             while (true)
             {
@@ -49,6 +38,14 @@ namespace Game
                 HandleInput();
                 MoveEntities();
             }
+        }
+
+        static void GenerateEnemy(string name, Map map, int x, int y)
+        {
+            Enemy enemy = EnemyFactory.GetEnemy(name, x, y);
+            enemy.CurrentMap = map;
+            DrawableEntities.Add(enemy);
+            MovableEntities.Add(enemy);
         }
 
         static void MoveEntities()
