@@ -3,7 +3,7 @@ using System;
 
 namespace Game
 {
-    public class Enemy : IDrawable, IMovable
+    public abstract class Enemy : IDrawable, IMovable
     {
         public Position Position;
         public Map CurrentMap = null;
@@ -27,11 +27,17 @@ namespace Game
         #region IDrawable implementation
         public void Draw()
         {
+            SetColor();
             Console.SetCursorPosition(Position.X, Position.Y);
             Console.Write(GetSymbol());
         }
 
-        public char GetSymbol()
+        public void SetColor()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+        }
+
+        public virtual char GetSymbol()
         {
             return '$';
         }

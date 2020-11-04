@@ -28,6 +28,7 @@ namespace Game
         #region IDrawable implementation
         public void Draw()
         {
+            SetColor();
             for (int i = MinLeft; i < MaxLeft + 1; i++)
             {
                 Console.SetCursorPosition(i, MinTop - 1);
@@ -51,6 +52,11 @@ namespace Game
                 Console.SetCursorPosition(MaxLeft + 1, i);
                 Console.Write(GetSymbol());
             }
+        }
+
+        public void SetColor()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public char GetSymbol()

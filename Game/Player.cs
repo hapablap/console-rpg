@@ -26,8 +26,14 @@ namespace Game
         #region IDrawable implementation
         public void Draw()
         {
+            SetColor();
             Console.SetCursorPosition(Position.X, Position.Y);
             Console.Write(GetSymbol());
+        }
+
+        public void SetColor()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
         }
 
         public char GetSymbol()

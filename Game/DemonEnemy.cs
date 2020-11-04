@@ -6,5 +6,10 @@
         {
 
         }
+
+        public override char GetSymbol()
+        {
+            return '!';
+        }
     }
 }

@@ -19,23 +19,27 @@ namespace Game
             Console.CursorVisible = false;
 
             Map map = new Map(1, 1, 20, 50);
-            Enemy orcEnemy = EnemyFactory.GetEnemy("orc", 2, 2);
+            Enemy orcEnemy1 = EnemyFactory.GetEnemy("orc", 2, 2);
+            Enemy orcEnemy2 = EnemyFactory.GetEnemy("orc", 4, 11);
             Enemy demonEnemy = EnemyFactory.GetEnemy("demon", 5, 8);
             Enemy undeadEnemy = EnemyFactory.GetEnemy("undead", 12, 15);
             Player player = Player.GetInstance();
             player.CurrentMap = map;
-            orcEnemy.CurrentMap = map;
+            orcEnemy1.CurrentMap = map;
+            orcEnemy2.CurrentMap = map;
             demonEnemy.CurrentMap = map;
             undeadEnemy.CurrentMap = map;
 
             DrawableEntities.Add(map);
             DrawableEntities.Add(player);
-            DrawableEntities.Add(orcEnemy);
+            DrawableEntities.Add(orcEnemy1);
+            DrawableEntities.Add(orcEnemy2);
             DrawableEntities.Add(demonEnemy);
             DrawableEntities.Add(undeadEnemy);
 
             MovableEntities.Add(player);
-            MovableEntities.Add(orcEnemy);
+            MovableEntities.Add(orcEnemy1);
+            MovableEntities.Add(orcEnemy2);
             MovableEntities.Add(demonEnemy);
             MovableEntities.Add(undeadEnemy);
 
