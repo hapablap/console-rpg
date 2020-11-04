@@ -12,6 +12,9 @@ namespace Game
 
         static EnemyFactory EnemyFactory = new EnemyFactory();
 
+        public static bool IsFighting = false;
+        public static Enemy CurrentEnemy = null;
+
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
@@ -32,10 +35,17 @@ namespace Game
 
             while (true)
             {
-                DrawScreen();
-                HandleInput();
-                MoveEntities();
-                CheckCollisions();
+                if (IsFighting)
+                {
+                    DrawFightScreen();
+                }
+                else
+                {
+                    DrawScreen();
+                    HandleInput();
+                    MoveEntities();
+                    CheckCollisions();
+                }
             }
         }
 
@@ -65,6 +75,39 @@ namespace Game
                 {
                     collidable.ActionOnCollision();
                 }
+            }
+        }
+
+        static void DrawFightScreen()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Fight started!");
+            Console.WriteLine("Choose action:");
+            Console.WriteLine("    0) Run away");
+            Console.WriteLine("    1) Fight");
+
+            int action = Convert.ToInt32(Console.ReadLine());
+
+            switch (action)
+            {
+                case 0:
+                    // Run away
+                    // Tipp: Rückgängig machen von Enemy.ActionOnCollision()
+                    break;
+                case 1:
+                    // Fight
+                    // Tipp: Z.B. Random eine Zahl werfen (0-1), 
+                    //       bei 0: Gegner trifft Spieler (Player.Health verringern)
+                    //       bei 1: Spieler trifft Gegner (CurrentEnemy.Health verringern)
+                    // Überprüfen, ob Player oder CurrentEnemy Health <= 0
+                    //      bei Player.Health <0 => Game Over
+                    //      bei CurrentEnemy.Health => Spiel fortsetzen (vgl. Run Away),
+                    //                              => zusätzlich besiegten Gegner entfernen
+                    break;
+                default:
+                    // Invalid input
+                    break;
             }
         }
 

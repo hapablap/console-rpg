@@ -8,6 +8,7 @@ namespace Game
         public Position Position;
         public Direction MoveDirection;
         public Map CurrentMap = null;
+        public int Health = 100;
 
         private static Player instance = null;
 

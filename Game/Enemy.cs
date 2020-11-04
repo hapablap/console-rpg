@@ -7,6 +7,7 @@ namespace Game
     {
         public Position Position;
         public Map CurrentMap = null;
+        public int Health = 100;
 
         private Direction moveDirection = Direction.None;
 
@@ -79,7 +80,8 @@ namespace Game
 
         public void ActionOnCollision()
         {
-            Console.WriteLine("Starting Fight!");
+            Program.IsFighting = true;
+            Program.CurrentEnemy = this;
         }
         #endregion
     }
