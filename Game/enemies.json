@@ -1,0 +1,32 @@
+﻿[
+    {
+        "EnemyType": "orc",
+        "X": 2,
+        "Y": 2
+    },
+    {
+        "EnemyType": "orc",
+        "X": 4,
+        "Y": 11
+    },
+    {
+        "EnemyType": "demon",
+        "X": 4,
+        "Y": 8
+    },
+    {
+        "EnemyType": "demon",
+        "X": 20,
+        "Y": 20
+    },
+    {
+        "EnemyType": "undead",
+        "X": 12,
+        "Y": 15
+    },
+    {
+        "EnemyType": "undead",
+        "X": 24,
+        "Y": 15
+    }
+]
