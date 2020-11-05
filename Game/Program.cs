@@ -1,11 +1,15 @@
 ﻿using Game.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace Game
 {
     class Program
     {
+        const string ENEMY_DATA_PATH = "enemies.json";
+
         static List<IDrawable> DrawableEntities = new List<IDrawable>();
         static List<IMovable> MovableEntities = new List<IMovable>();
         static List<ICollidable> Collidables = new List<ICollidable>();
@@ -57,38 +61,8 @@ namespace Game
 
         static List<EnemySaveData> LoadEnemySaveData()
         {
-            List<EnemySaveData> enemySaveDataList = new List<EnemySaveData>();
-
-            EnemySaveData enemySaveData1 = new EnemySaveData();
-            enemySaveData1.EnemyType = "orc";
-            enemySaveData1.X = 2;
-            enemySaveData1.Y = 2;
-
-            EnemySaveData enemySaveData2 = new EnemySaveData();
-            enemySaveData2.EnemyType = "orc";
-            enemySaveData2.X = 4;
-            enemySaveData2.Y = 11;
-
-            EnemySaveData enemySaveData3 = new EnemySaveData();
-            enemySaveData3.EnemyType = "demon";
-            enemySaveData3.X = 4;
-            enemySaveData3.Y = 8;
-
-            EnemySaveData enemySaveData4 = new EnemySaveData();
-            enemySaveData4.EnemyType = "undead";
-            enemySaveData4.X = 12;
-            enemySaveData4.Y = 15;
-
-            EnemySaveData enemySaveData5 = new EnemySaveData();
-            enemySaveData5.EnemyType = "undead";
-            enemySaveData5.X = 24;
-            enemySaveData5.Y = 15;
-
-            enemySaveDataList.Add(enemySaveData1);
-            enemySaveDataList.Add(enemySaveData2);
-            enemySaveDataList.Add(enemySaveData3);
-            enemySaveDataList.Add(enemySaveData4);
-            enemySaveDataList.Add(enemySaveData5);
+            string json = File.ReadAllText(ENEMY_DATA_PATH);
+            List<EnemySaveData> enemySaveDataList = JsonSerializer.Deserialize(json, typeof(List<EnemySaveData>)) as List<EnemySaveData>;
 
             return enemySaveDataList;
         }
