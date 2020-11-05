@@ -72,11 +72,17 @@ namespace Game
             {
                 // Generiere das JSON
                 // Alternative: Fehlermeldung ausgeben und Programm beenden
+                Console.WriteLine("Datei enemies.json nicht gefunden!");
+                Console.ReadLine();
+                Environment.Exit(0);
             }
             catch(JsonException)
             {
                 // Generiere das JSON
                 // Alternative: Fehlermeldung ausgeben und Programm beenden
+                Console.WriteLine("Fehler in der enemies.json Datei!");
+                Console.ReadLine();
+                Environment.Exit(0);
             }
 
             return enemySaveDataList;
