@@ -61,8 +61,23 @@ namespace Game
 
         static List<EnemySaveData> LoadEnemySaveData()
         {
-            string json = File.ReadAllText(ENEMY_DATA_PATH);
-            List<EnemySaveData> enemySaveDataList = JsonSerializer.Deserialize(json, typeof(List<EnemySaveData>)) as List<EnemySaveData>;
+            List<EnemySaveData> enemySaveDataList = new List<EnemySaveData>();
+
+            try
+            {
+                string json = File.ReadAllText(ENEMY_DATA_PATH);
+                enemySaveDataList = JsonSerializer.Deserialize(json, typeof(List<EnemySaveData>)) as List<EnemySaveData>;
+            }
+            catch(FileNotFoundException)
+            {
+                // Generiere das JSON
+                // Alternative: Fehlermeldung ausgeben und Programm beenden
+            }
+            catch(JsonException)
+            {
+                // Generiere das JSON
+                // Alternative: Fehlermeldung ausgeben und Programm beenden
+            }
 
             return enemySaveDataList;
         }
