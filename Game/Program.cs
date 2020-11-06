@@ -27,7 +27,7 @@ namespace Game
 
             Map map = new Map(1, 1, 20, 50);
 
-            List<EnemySaveData> enemySaveDataList = LoadEnemySaveData();
+            List<EnemySaveData> enemySaveDataList = LoadEnemySaveData(true);
             foreach (EnemySaveData enemySaveData in enemySaveDataList)
             {
                 GenerateEnemy(enemySaveData.EnemyType, map, enemySaveData.X, enemySaveData.Y);
@@ -59,7 +59,36 @@ namespace Game
             }
         }
 
-        static List<EnemySaveData> LoadEnemySaveData()
+        static void GenerateEnemySaveData()
+        {
+            if (!File.Exists(ENEMY_DATA_PATH))
+            {
+                List<EnemySaveData> enemySaveDataList = new List<EnemySaveData>();
+                enemySaveDataList.Add(new EnemySaveData()
+                {
+                    EnemyType = "orc",
+                    X = 5,
+                    Y = 10
+                });
+                enemySaveDataList.Add(new EnemySaveData()
+                {
+                    EnemyType = "demon",
+                    X = 15,
+                    Y = 15
+                });
+                enemySaveDataList.Add(new EnemySaveData()
+                {
+                    EnemyType = "undead",
+                    X = 20,
+                    Y = 8
+                });
+
+                string json = JsonSerializer.Serialize(enemySaveDataList);
+                File.WriteAllText(ENEMY_DATA_PATH, json);
+            }
+        }
+
+        static List<EnemySaveData> LoadEnemySaveData(bool generateOnFail)
         {
             List<EnemySaveData> enemySaveDataList = new List<EnemySaveData>();
 
@@ -68,21 +97,36 @@ namespace Game
                 string json = File.ReadAllText(ENEMY_DATA_PATH);
                 enemySaveDataList = JsonSerializer.Deserialize(json, typeof(List<EnemySaveData>)) as List<EnemySaveData>;
             }
-            catch(FileNotFoundException)
+            catch (FileNotFoundException)
             {
-                // Generiere das JSON
-                // Alternative: Fehlermeldung ausgeben und Programm beenden
-                Console.WriteLine("Datei enemies.json nicht gefunden!");
-                Console.ReadLine();
-                Environment.Exit(0);
+                if (generateOnFail)
+                {
+                    GenerateEnemySaveData();
+                    return LoadEnemySaveData(false);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Failed loading and generating enemy data.");
+                    Console.ReadLine();
+                    Environment.Exit(0);
+                }
             }
-            catch(JsonException)
+            catch (JsonException)
             {
-                // Generiere das JSON
-                // Alternative: Fehlermeldung ausgeben und Programm beenden
-                Console.WriteLine("Fehler in der enemies.json Datei!");
-                Console.ReadLine();
-                Environment.Exit(0);
+                if (generateOnFail)
+                {
+                    File.Delete(ENEMY_DATA_PATH);
+                    GenerateEnemySaveData();
+                    return LoadEnemySaveData(false);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Failed loading and generating enemy data.");
+                    Console.ReadLine();
+                    Environment.Exit(0);
+                }
             }
 
             return enemySaveDataList;
@@ -153,11 +197,11 @@ namespace Game
                 case 1:
                     Random random = new Random();
                     int randomNumber = random.Next(0, 100);
-                    if(randomNumber <= 30)
+                    if (randomNumber <= 30)
                     {
                         Player.GetInstance().Health -= 10;
                     }
-                    else 
+                    else
                     {
                         CurrentEnemy.Health -= 10;
                     }
@@ -165,7 +209,7 @@ namespace Game
                     if (Player.GetInstance().Health <= 0)
                         IsGameOver = true;
 
-                    if(CurrentEnemy.Health <= 0)
+                    if (CurrentEnemy.Health <= 0)
                     {
                         RemoveEnemy(CurrentEnemy);
                         CurrentEnemy = null;
